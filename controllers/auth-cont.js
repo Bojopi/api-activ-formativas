@@ -1,6 +1,7 @@
 const User = require('../models/user-model')
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
+const bcrypt = require("bcryptjs");
 
 exports.autenticarUsuario = async(req, res) => {
     const errores = validationResult(req)
@@ -20,15 +21,24 @@ exports.autenticarUsuario = async(req, res) => {
             return res.status(400).json({
                 msg: 'El usuario no existe'
             })
+        } else {
+            const cmp = await bcrypt.compare(password, usuario.password)
+            if(!cmp){
+                res.json({
+                    msg: "El password es incorrecto"
+                })
+            }
         }
 
         //revisar el password
-        let passCorrecto = await User.findOne({password})
-        if (!passCorrecto) {
-            return res.status(400).json({
-                msg: 'Password Incorrecto'
-            })
-        }
+        // let passCorrecto = await User.findOne({password})
+        // if (!passCorrecto) {
+        //     return res.status(400).json({
+        //         msg: 'Password Incorrecto'
+        //     })
+        // }
+        
+        
 
         //si todo es correcto
         //crear y firmar el jwt
