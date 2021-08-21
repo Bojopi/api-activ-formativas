@@ -43,7 +43,7 @@ const crearUser = async (req = request, res = response) => {
             res.json({
                 msg:"el usuario ya está en uso"
             })
-        }
+        } 
         else{
             const newUser = new User({username, name, lastname, phone, password})
             newUser.password = await newUser.encryptPassword(password)
