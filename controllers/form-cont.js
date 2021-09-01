@@ -16,45 +16,47 @@ const obtenerActividad = async (req = request, res = response) => {
 };
 
 const crearActividad = async (req = request, res = response) => {
-    let errors = [];
-    const { username, name, lastname, phone, password, confirm_password } = req.body;
-    // res.json({
-    //     username,
-    //     name,
-    //     lastname,
-    //     phone,
-    //     password
-    // })
+  let errors = [];
+  const {
+    fecha,
+    responsable,
+    semestre,
+    modulo,
+    area,
+    materia,
+    carrera,
+    tip_actividad,
+    desc_actividad,
+    archivo,
+  } = req.body;
 
-    if(password != confirm_password) {
-        errors.push({text: "las contraseñas no coinciden"})
-        res.json({
-            errors
-        })
+  console.log(req.files);
+
+  if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
+    res.status(400).json({
+      msg: "No hay archivos cargados."
+    });
+    return;
+  }
+
+  sampleFile = req.files.archivo;
+
+  uploadPath = __dirname + "/uploads/" + sampleFile.name;
+
+  sampleFile.mv(uploadPath, function (err) {
+    if (err) {
+      return res.status(500).send(err);
     }
-    if(errors.length > 0) {
-        res.status(500).json({
-            msg:"Hubo un error"
-        })
-    } else {
-        const email = await User.findOne({ username: username})
-        if(email){
-            res.json({
-                msg:"el usuario ya está en uso"
-            })
-        } 
-        else{
-            const newUser = new User({username, name, lastname, phone, password})
-            newUser.password = await newUser.encryptPassword(password)
-            await newUser.save()
-            res.status(200).json({
-                newUser
-            })
-        }
-    }
+
+    res.send("File uploaded to " + uploadPath);
+  });
+
+  res.json({
+    msg: "actividad creada",
+  });
 };
 
 module.exports = {
-  obtenerUser,
-  crearUser
+  crearActividad,
+  obtenerActividad,
 };

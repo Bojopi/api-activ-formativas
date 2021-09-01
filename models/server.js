@@ -14,6 +14,7 @@ class Server {
         this.path = {
             user: '/api/user',
             auth: '/api/auth',
+            actividad: '/api/actividad',
             // categoria: '/api/categorias',
             // imagen: '/api/imagenes',
             // uploads: '/api/uploads',
@@ -50,14 +51,14 @@ class Server {
         this.app.use(fileUpload({
             useTempFiles: true,
             tempFileDir: '/tmp/',
-            createParentPath: true,
+            // createParentPath: true,
         }))
     }
 
     routes() {
         this.app.use(this.path.user, require('../routes/user'))
         this.app.use(this.path.auth, require('../routes/auth'))
-        // this.app.use(this.path.categoria, require('../routes/categorias'))
+        this.app.use(this.path.actividad, require('../routes/formulario'))
         // this.app.use(this.path.imagen, require('../routes/imagen'))
         // this.app.use(this.path.uploads, require('../routes/uploads'))
         // this.app.use(this.path.userWeb2, require('../routes/userWeb2'))
