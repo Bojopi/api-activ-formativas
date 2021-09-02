@@ -1,10 +1,10 @@
 const path = require('path')
-const { v4: uuidv4 } = require('uuid')
+// const { v4: uuidv4 } = require('uuid')
 
 //extensiones
-const extensionImagen = ['png', 'jpg', 'jpeg', 'JPG', 'PNG', 'JPEG']
+// const extensionArchivo = ['docx']
 
-const subirArchivos = ( files, extensionImagen = ['png', 'jpg', 'jpeg', 'JPG', 'PNG', 'JPEG'], carpeta = '' ) => {
+const subirArchivos = ( files, extensionArchivo = ['docx'], carpeta = '' ) => {
 
     return new Promise((resolve, reject) => {
         const{ archivo } = files
@@ -12,20 +12,20 @@ const subirArchivos = ( files, extensionImagen = ['png', 'jpg', 'jpeg', 'JPG', '
         const extension = nombreCortado[ nombreCortado.length - 1 ]
     
         //Validar la extension
-        if (!extensionImagen.includes(extension)) {
-            return reject(`La extension ${extension} no es permitida`)
+        if (!extensionArchivo.includes(extension)) {
+            return reject(`La extension: ${extension} no es permitida, solo se permiten archivos ${extensionArchivo}`)
         }
     
-        const nombreTemp = uuidv4() + '.' + extension
+        // const nombreTemp = uuidv4() + '.' + extension
     
-        const uploadPath = path.join(__dirname, '../uploads/', carpeta, nombreTemp)
+        const uploadPath = path.join(__dirname, '../uploads/', carpeta, archivo.name)
     
         archivo.mv(uploadPath, (err) => {
             if (err) {
                 reject(err)
             }
     
-            resolve( nombreTemp )
+            resolve( archivo.name )
         })
     })
 

@@ -1,5 +1,8 @@
+const path = require('path')
+
 const { response, request } = require("express");
 const Actividad = require("../models/form-model");
+const { subirArchivos } = require('../helpers');
 
 const obtenerActividad = async (req = request, res = response) => {
   const { limite = 5, desde = 0 } = req.query;
@@ -16,7 +19,7 @@ const obtenerActividad = async (req = request, res = response) => {
 };
 
 const crearActividad = async (req = request, res = response) => {
-  let errors = [];
+  // let errors = [];
   const {
     fecha,
     responsable,
@@ -27,10 +30,10 @@ const crearActividad = async (req = request, res = response) => {
     carrera,
     tip_actividad,
     desc_actividad,
-    archivo,
+    // archivo,
   } = req.body;
 
-  console.log(req.files);
+  // console.log(req.files);
 
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
     res.status(400).json({
@@ -38,22 +41,51 @@ const crearActividad = async (req = request, res = response) => {
     });
     return;
   }
+  try {
+    const nombreArchivo = await subirArchivos(req.files)
+    res.json({
+      nombreArchivo
+    })
+    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, nombreArchivo})
+    await newActividad.save()
+    res.status(200).json({
+      msg: 'Actividad guardada correctamente'
+    })
+  } catch (error) {
+    res.status(400).json({error})
+  }
 
-  sampleFile = req.files.archivo;
+  // const { archivo } = req.files;
 
-  uploadPath = __dirname + "/uploads/" + sampleFile.name;
+  // //validar la extensión del archivo
+  // const nomCortado = archivo.name.split('.')
+  // const extension = nomCortado[nomCortado.length - 1]
 
-  sampleFile.mv(uploadPath, function (err) {
-    if (err) {
-      return res.status(500).send(err);
-    }
+  // const extensionValida = ['docx']
+  // if(!extensionValida.includes(extension)) {
+  //   return res.status(400).json({
+  //     msg: `La extension: ${extension} no es permitida, solo se permiten archivos ${extensionValida}`
+  //   })
+  // }
 
-    res.send("File uploaded to " + uploadPath);
-  });
+  // res.json({extension})
 
-  res.json({
-    msg: "actividad creada",
-  });
+  // const uploadPath = path.join(__dirname, "../uploads/", archivo.name)
+
+  // archivo.mv(uploadPath, (err) => {
+  //   if (err) {
+  //     return res.status(500).json({err});
+  //   }
+
+  //   res.send("File uploaded to " + uploadPath);
+  // });
+
+  // res.json({
+  //   msg: "actividad creada",
+  // });
+  
+  // console.log(req.files)
+  
 };
 
 module.exports = {
