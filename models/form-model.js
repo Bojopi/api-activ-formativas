@@ -52,4 +52,4 @@ ActividadSchema.methods.toJSON = function () {
   return data;
 };
 
-module.exports = model("Actividad", ActividadSchema);
+module.exports = model("Actividades", ActividadSchema);

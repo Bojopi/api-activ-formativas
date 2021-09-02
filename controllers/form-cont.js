@@ -35,26 +35,32 @@ const crearActividad = async (req = request, res = response) => {
 
   // console.log(req.files);
 
-  if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
-    res.status(400).json({
-      msg: "No hay archivos cargados."
-    });
-    return;
-  }
+  // if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
+  //   res.status(400).json({
+  //     msg: "No hay archivos cargados."
+  //   });
+  //   return;
+  // }
   try {
     const nombreArchivo = await subirArchivos(req.files)
-    res.json({
-      nombreArchivo
-    })
+    return nombreArchivo
+    // res.json({
+    //   nombreArchivo
+    // })
+  } catch (error) {
+    res.status(400).json({error})
+  }
+  try {
     const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, nombreArchivo})
     await newActividad.save()
     res.status(200).json({
       msg: 'Actividad guardada correctamente'
     })
+    
   } catch (error) {
     res.status(400).json({error})
   }
-
+  
   // const { archivo } = req.files;
 
   // //validar la extensión del archivo
