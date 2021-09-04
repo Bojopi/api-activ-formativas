@@ -41,17 +41,19 @@ const crearActividad = async (req = request, res = response) => {
   //   });
   //   return;
   // }
+  let archivo = ''
   try {
     const nombreArchivo = await subirArchivos(req.files)
-    return nombreArchivo
+    archivo = nombreArchivo
     // res.json({
     //   nombreArchivo
     // })
   } catch (error) {
     res.status(400).json({error})
   }
+  console.log(archivo)
   try {
-    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, nombreArchivo})
+    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo})
     await newActividad.save()
     res.status(200).json({
       msg: 'Actividad guardada correctamente'
