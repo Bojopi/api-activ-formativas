@@ -1,5 +1,7 @@
 
 const { response } = require('express')
+const path = require('path')
+const fs = require('fs')
 // const { subirArchivos } = require('../helpers')
 
 const Archivo = require('../models/form-model')
@@ -29,14 +31,16 @@ const mostrarArchivos = async(req, res = response) => {
     
     const { id } = req.params
 
-    const query = {_id: id}
+    // console.log(id)
+    // const query = {_id: id}
 
     let modelo
 
-    modelo = await Archivo.find(query)
-    res.json({
-        modelo
-    })
+    modelo = await Archivo.findById(id)
+    // res.json({
+    //     modelo
+    // })
+    console.log(modelo)
     // switch (coleccion) {
     //     case 'imagen':
     //         modelo = await Imagen.findById(id)
@@ -51,12 +55,13 @@ const mostrarArchivos = async(req, res = response) => {
     //         return res.status(500).json({ msg: "hay que validar" })
     // }
 
-    // if (modelo.img) {
-    //     const pathImagen =  path.join(__dirname, '../uploads', coleccion, modelo.img)
-    //     if (fs.existsSync(pathImagen)) {
-    //         return res.sendFile(pathImagen)
-    //     }
-    // }
+    if (modelo.archivo) {
+        const pathImagen =  path.join(__dirname, '../uploads', modelo.archivo)
+        console.log(modelo.archivo)
+        if (fs.existsSync(pathImagen)) {
+            return res.sendFile(pathImagen)
+        }
+    }
 
     // res.json({ msg: 'falta el placeholder'})
 }

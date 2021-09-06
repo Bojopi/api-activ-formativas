@@ -51,7 +51,7 @@ const crearActividad = async (req = request, res = response) => {
   } catch (error) {
     res.status(400).json({error})
   }
-  console.log(archivo)
+  // console.log(archivo)
   try {
     const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo})
     await newActividad.save()
