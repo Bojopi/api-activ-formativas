@@ -168,6 +168,19 @@ const crearActividad = async (req = request, res = response) => {
   
 };
 
+const actualizarEstadoAceptado = async (req = request, res = response) => {
+
+  const { id } = req.params
+
+  let query = {estado: "Aceptado"}
+
+  try {
+    const cambio = await Actividad.findByIdAndUpdate(id, {estado: "Aceptado"})
+  } catch (error) {
+    res.status(400).json({error})
+  }
+};
+
 module.exports = {
   crearActividad,
   obtenerActividad,
