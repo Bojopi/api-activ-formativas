@@ -4,7 +4,7 @@ const path = require('path')
 //extensiones
 // const extensionArchivo = ['docx']
 
-const subirArchivos = ( files, extensionArchivo = ['docx'], carpeta = '' ) => {
+const subirArchivos = ( files, extensionArchivo = ['docx', 'xls', 'pptx', 'pdf'], carpeta = '' ) => {
 
     return new Promise((resolve, reject) => {
         const{ archivo } = files

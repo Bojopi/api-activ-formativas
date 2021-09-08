@@ -42,9 +42,17 @@ const ActividadSchema = Schema({
     required: true,
   },
   estado: {
-    type: Boolean,
-    default: false,
+    type: String,
+    default: "Pendiente",
   },
+  date: {
+    type: Date,
+    required: true
+  },
+  observacion: {
+    type: String,
+    required: false
+  }
 });
 
 ActividadSchema.methods.toJSON = function () {

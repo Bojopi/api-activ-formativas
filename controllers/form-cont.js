@@ -18,6 +18,74 @@ const obtenerActividad = async (req = request, res = response) => {
   });
 };
 
+const obtenerActividadPendiente = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+
+  let query = {estado: "Pendiente"}
+
+  const actividades = await Actividad.find(query);
+  // .skip(Number(desde))
+  // .limit(Number(limite))
+
+  const total = await Actividad.countDocuments(query);
+
+  res.json({
+    total,
+    actividades,
+  });
+};
+
+const obtenerActividadAceptada = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+
+  let query = {estado: "Aceptado"}
+
+  const actividades = await Actividad.find(query);
+  // .skip(Number(desde))
+  // .limit(Number(limite))
+
+  const total = await Actividad.countDocuments(query);
+
+  res.json({
+    total,
+    actividades,
+  });
+};
+
+const obtenerActividadRechazada = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+
+  let query = {estado: "Rechazado"}
+
+  const actividades = await Actividad.find(query);
+  // .skip(Number(desde))
+  // .limit(Number(limite))
+
+  const total = await Actividad.countDocuments(query);
+
+  res.json({
+    total,
+    actividades,
+  });
+};
+
+const obtenerActividadObservada = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+
+  let query = {estado: "Observado"}
+
+  const actividades = await Actividad.find(query);
+  // .skip(Number(desde))
+  // .limit(Number(limite))
+
+  const total = await Actividad.countDocuments(query);
+
+  res.json({
+    total,
+    actividades,
+  });
+};
+
 const crearActividad = async (req = request, res = response) => {
   // let errors = [];
   const {
@@ -41,6 +109,10 @@ const crearActividad = async (req = request, res = response) => {
   //   });
   //   return;
   // }
+
+  const date = new Date()
+  // console.log(date)
+
   let archivo = ''
   try {
     const nombreArchivo = await subirArchivos(req.files)
@@ -53,7 +125,7 @@ const crearActividad = async (req = request, res = response) => {
   }
   // console.log(archivo)
   try {
-    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo})
+    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
     await newActividad.save()
     res.status(200).json({
       msg: 'Actividad guardada correctamente'
@@ -99,4 +171,8 @@ const crearActividad = async (req = request, res = response) => {
 module.exports = {
   crearActividad,
   obtenerActividad,
+  obtenerActividadPendiente,
+  obtenerActividadAceptada,
+  obtenerActividadRechazada,
+  obtenerActividadObservada,
 };

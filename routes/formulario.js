@@ -14,4 +14,29 @@ router.get('/',
     formController.obtenerActividad
 )
 
+//obtener las actividades pendientes
+router.get('/pendientes',
+    formController.obtenerActividadPendiente
+)
+
+//obtener las actividades aceptadas
+router.get('/aceptados',
+    formController.obtenerActividadAceptada
+)
+
+//obtener las actividades rechazadas
+router.get('/rechazados',
+    formController.obtenerActividadRechazada
+)
+
+//obtener las actividades observadas
+router.get('/observados',
+    formController.obtenerActividadObservada
+)
+
+//actualizar el estado
+// router.put('/',
+//     formController.
+// )
+
 module.exports = router
