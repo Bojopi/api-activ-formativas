@@ -7,7 +7,9 @@ const UserSchema = Schema({
   lastname: { type: String },
   phone: { type: String },
   password: { type: String, required: true },
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  categoria: { type: String, require: false },
+  rol: { type: String, default: 'Personal'}
 });
 
 UserSchema.methods.encryptPassword = async (password) => {

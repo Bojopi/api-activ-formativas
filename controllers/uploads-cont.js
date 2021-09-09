@@ -31,16 +31,11 @@ const mostrarArchivos = async(req, res = response) => {
     
     const { id } = req.params
 
-    // console.log(id)
-    // const query = {_id: id}
-
     let modelo
 
     modelo = await Archivo.findById(id)
-    // res.json({
-    //     modelo
-    // })
     console.log(modelo)
+
     // switch (coleccion) {
     //     case 'imagen':
     //         modelo = await Imagen.findById(id)
@@ -62,8 +57,6 @@ const mostrarArchivos = async(req, res = response) => {
             return res.sendFile(pathImagen)
         }
     }
-
-    // res.json({ msg: 'falta el placeholder'})
 }
 
 

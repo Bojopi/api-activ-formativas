@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-// const { check } = require('express-validator')
+const { check } = require('express-validator')
 const formController = require('../controllers/form-cont')
 // const auth = require('../middlewares/auth-mid')
 
@@ -34,9 +34,11 @@ router.get('/observados',
     formController.obtenerActividadObservada
 )
 
-//actualizar el estado
-// router.put('/',
-//     formController.
-// )
+// actualizar el estado
+router.put('/:id', [
+    check('id', 'El id debe ser de mongo'),
+],
+    formController.actualizarEstado
+)
 
 module.exports = router
