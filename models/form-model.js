@@ -6,8 +6,8 @@ const ActividadSchema = Schema({
     required: true,
   },
   responsable: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
   },
   semestre: {
     type: String,

@@ -2,35 +2,41 @@ const express = require('express')
 const router = express.Router()
 const { check } = require('express-validator')
 const formController = require('../controllers/form-cont')
-// const auth = require('../middlewares/auth-mid')
+const auth = require('../middlewares/auth-mid')
 
 //subir actividad
 router.post('/',
+    auth,
     formController.crearActividad
 )
 
 //obtener las actividades
 router.get('/',
+    auth,
     formController.obtenerActividad
 )
 
 //obtener las actividades pendientes
 router.get('/pendientes',
+    auth,
     formController.obtenerActividadPendiente
 )
 
 //obtener las actividades aceptadas
 router.get('/aceptados',
+    auth,
     formController.obtenerActividadAceptada
 )
 
 //obtener las actividades rechazadas
 router.get('/rechazados',
+    auth,
     formController.obtenerActividadRechazada
 )
 
 //obtener las actividades observadas
 router.get('/observados',
+    auth,
     formController.obtenerActividadObservada
 )
 
@@ -38,6 +44,7 @@ router.get('/observados',
 router.put('/:id', [
     check('id', 'El id debe ser de mongo'),
 ],
+    auth,
     formController.actualizarEstado
 )
 

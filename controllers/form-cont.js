@@ -90,7 +90,7 @@ const crearActividad = async (req = request, res = response) => {
   // let errors = [];
   const {
     fecha,
-    responsable,
+    // responsable,
     semestre,
     modulo,
     area,
@@ -125,7 +125,9 @@ const crearActividad = async (req = request, res = response) => {
   }
   // console.log(archivo)
   try {
-    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    // const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    newActividad.responsable = req.usuario.id
     await newActividad.save()
     res.status(200).json({
       msg: 'Actividad guardada correctamente'
