@@ -129,9 +129,9 @@ const crearActividad = async (req = request, res = response) => {
     const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
     newActividad.responsable = req.usuario.id
     await newActividad.save()
-    res.status(200).json({
-      msg: 'Actividad guardada correctamente'
-    })
+    // res.status(200).json({
+    //   msg: 'Actividad guardada correctamente'
+    // })
     
   } catch (error) {
     res.status(400).json({error})
