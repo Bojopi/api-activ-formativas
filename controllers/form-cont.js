@@ -4,18 +4,36 @@ const { response, request } = require("express");
 const Actividad = require("../models/form-model");
 const { subirArchivos } = require('../helpers');
 
-const obtenerActividad = async (req = request, res = response) => {
-  const { limite = 5, desde = 0 } = req.query;
-  const actividades = await Actividad.find();
+const obtenerActividad = async (req, res = response) => {
+  try {
+    const actividades = await Actividad.find()
+    const total = await Actividad.countDocuments()
+    res.status(200).json({
+      total,
+      actividades
+    })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+}
+
+const obtenerActividadPorUsuario = async (req, res = response) => {
+  // const { limite = 5, desde = 0 } = req.query;
+  
+  try {
+    const actividades = await Actividad.find({ responsable: req.usuario.id });
   // .skip(Number(desde))
   // .limit(Number(limite))
 
-  const total = await Actividad.countDocuments();
+    const total = await Actividad.countDocuments({ responsable: req.usuario.id });
 
   res.json({
     total,
     actividades,
   });
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 };
 
 const obtenerActividadPendiente = async (req = request, res = response) => {
@@ -23,16 +41,19 @@ const obtenerActividadPendiente = async (req = request, res = response) => {
 
   let query = {estado: "Pendiente"}
 
-  const actividades = await Actividad.find(query);
-  // .skip(Number(desde))
-  // .limit(Number(limite))
-
-  const total = await Actividad.countDocuments(query);
-
-  res.json({
-    total,
-    actividades,
-  });
+  try {
+    const actividades = await Actividad.find(query);
+    // .skip(Number(desde))
+    // .limit(Number(limite))
+  
+    const total = await Actividad.countDocuments(query);
+    res.json({
+      total,
+      actividades,
+    });
+  } catch (error) {
+    res.status(400).json({ error })
+  }
 };
 
 const obtenerActividadAceptada = async (req = request, res = response) => {
@@ -86,8 +107,7 @@ const obtenerActividadObservada = async (req = request, res = response) => {
   });
 };
 
-const crearActividad = async (req = request, res = response) => {
-  // let errors = [];
+const crearActividad = async (req, res = response) => {
   const {
     fecha,
     // responsable,
@@ -117,25 +137,30 @@ const crearActividad = async (req = request, res = response) => {
   try {
     const nombreArchivo = await subirArchivos(req.files)
     archivo = nombreArchivo
-    // res.json({
-    //   nombreArchivo
-    // })
+    const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    newActividad.responsable = req.usuario.id
+    await newActividad.save()
+    res.status(200).json({
+      msg: 'Actividad guardada correctamente'
+    })
   } catch (error) {
     res.status(400).json({error})
   }
   // console.log(archivo)
-  try {
-    // const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
-    const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
-    newActividad.responsable = req.usuario.id
-    await newActividad.save()
-    // res.status(200).json({
-    //   msg: 'Actividad guardada correctamente'
-    // })
+
+
+  // try {
+  //   // const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+  //   const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+  //   newActividad.responsable = req.usuario.id
+  //   await newActividad.save()
+  //   // res.status(200).json({
+  //   //   msg: 'Actividad guardada correctamente'
+  //   // })
     
-  } catch (error) {
-    res.status(400).json({error})
-  }
+  // } catch (error) {
+  //   res.status(400).json({error})
+  // }
   
   // const { archivo } = req.files;
 
@@ -180,6 +205,7 @@ const actualizarEstado = async (req = request, res = response) => {
 
   try {
     const actividad = await Actividad.findByIdAndUpdate(id, {estado})
+    console.log(actividad)
     res.json({actividad})
   } catch (error) {
     res.status(400).json({error})
@@ -189,6 +215,7 @@ const actualizarEstado = async (req = request, res = response) => {
 module.exports = {
   crearActividad,
   obtenerActividad,
+  obtenerActividadPorUsuario,
   obtenerActividadPendiente,
   obtenerActividadAceptada,
   obtenerActividadRechazada,

@@ -10,10 +10,15 @@ router.post('/',
     formController.crearActividad
 )
 
-//obtener las actividades
 router.get('/',
     auth,
     formController.obtenerActividad
+)
+
+//obtener las actividades
+router.get('/general',
+    auth,
+    formController.obtenerActividadPorUsuario
 )
 
 //obtener las actividades pendientes

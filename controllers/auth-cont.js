@@ -30,16 +30,6 @@ exports.autenticarUsuario = async(req, res) => {
             }
         }
 
-        //revisar el password
-        // let passCorrecto = await User.findOne({password})
-        // if (!passCorrecto) {
-        //     return res.status(400).json({
-        //         msg: 'Password Incorrecto'
-        //     })
-        // }
-        
-        
-
         //si todo es correcto
         //crear y firmar el jwt
         const payload = {
