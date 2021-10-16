@@ -2,6 +2,7 @@ const path = require('path')
 
 const { response, request } = require("express");
 const Actividad = require("../models/form-model");
+const Materia = require("../models/materia-model");
 const { subirArchivos } = require('../helpers');
 
 const obtenerActividad = async (req, res = response) => {
@@ -195,6 +196,23 @@ const crearActividad = async (req, res = response) => {
   
 };
 
+const buscarMateria = async (req = request, res = response) => {
+  let { nom_materia = '' } = req.query
+
+  // let query = {nom_materia: /c/i}
+
+  try {
+    const materia = await Materia.find({nom_materia: new RegExp(nom_materia,'i')})
+    // while(materia.hasNext()){
+    //   printjson(materia.next())
+    // }
+    console.log(materia)
+    res.json({materia})
+  } catch (error) {
+    res.status(400).json({error})
+  }
+}
+
 const actualizarEstado = async (req = request, res = response) => {
 
   const { id } = req.params
@@ -221,4 +239,5 @@ module.exports = {
   obtenerActividadRechazada,
   obtenerActividadObservada,
   actualizarEstado,
+  buscarMateria,
 };
