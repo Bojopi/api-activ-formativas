@@ -200,14 +200,19 @@ const buscarMateria = async (req = request, res = response) => {
   let { nom_materia = '' } = req.query
 
   // let query = {nom_materia: /c/i}
+  let materias = []
 
   try {
-    const materia = await Materia.find({nom_materia: new RegExp(nom_materia,'i')})
+    const materia = await (await Materia.find({nom_materia: new RegExp(nom_materia,'i')})).forEach((mat) => {
+      materias.push(mat.nom_materia)
+      // console.log(mat.nom_materia)
+      // console.log(materias)
+    })
     // while(materia.hasNext()){
     //   printjson(materia.next())
     // }
-    console.log(materia)
-    res.json({materia})
+    // console.log(materia)
+    res.json({materias})
   } catch (error) {
     res.status(400).json({error})
   }
