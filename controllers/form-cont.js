@@ -3,6 +3,7 @@ const path = require('path')
 const { response, request } = require("express");
 const Actividad = require("../models/form-model");
 const Materia = require("../models/materia-model");
+const Carrera = require("../models/carrera-model");
 const { subirArchivos } = require('../helpers');
 
 const obtenerActividad = async (req, res = response) => {
@@ -199,20 +200,28 @@ const crearActividad = async (req, res = response) => {
 const buscarMateria = async (req = request, res = response) => {
   let { nom_materia = '' } = req.query
 
-  // let query = {nom_materia: /c/i}
   let materias = []
 
   try {
     const materia = await (await Materia.find({nom_materia: new RegExp(nom_materia,'i')})).forEach((mat) => {
       materias.push(mat.nom_materia)
-      // console.log(mat.nom_materia)
-      // console.log(materias)
     })
-    // while(materia.hasNext()){
-    //   printjson(materia.next())
-    // }
-    // console.log(materia)
     res.json({materias})
+  } catch (error) {
+    res.status(400).json({error})
+  }
+}
+
+const buscarCarrera = async (req = request, res = response) => {
+  let { nom_carrera = '' } = req.query
+
+  let carreras = []
+
+  try {
+    const carrera = await (await Carrera.find({nom_carrera: new RegExp(nom_carrera,'i')})).forEach((car) => {
+      carreras.push(car.nom_carrera)
+    })
+    res.json({carreras})
   } catch (error) {
     res.status(400).json({error})
   }
@@ -245,4 +254,5 @@ module.exports = {
   obtenerActividadObservada,
   actualizarEstado,
   buscarMateria,
+  buscarCarrera,
 };

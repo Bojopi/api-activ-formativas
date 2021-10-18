@@ -19,6 +19,10 @@ router.get('/materia',
     auth,
     formController.buscarMateria
 )
+router.get('/carrera',
+    auth,
+    formController.buscarCarrera
+)
 
 //obtener las actividades
 router.get('/general',
