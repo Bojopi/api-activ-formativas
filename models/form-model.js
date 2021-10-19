@@ -41,7 +41,7 @@ const ActividadSchema = Schema({
   },
   archivo: {
     type: String,
-    required: true,
+    required: false,
   },
   estado: {
     type: String,
