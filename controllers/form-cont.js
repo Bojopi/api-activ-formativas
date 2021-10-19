@@ -147,6 +147,7 @@ const crearActividad = async (req, res = response) => {
       newActividad
     })
   } catch (error) {
+    console.log(error)
     res.status(400).json({error, msg: 'aqui llegó el error'})
   }
   // console.log(archivo)
