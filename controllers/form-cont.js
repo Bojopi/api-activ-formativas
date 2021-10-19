@@ -112,7 +112,7 @@ const obtenerActividadObservada = async (req = request, res = response) => {
 const crearActividad = async (req, res = response) => {
   const {
     fecha,
-    // responsable,
+    responsable,
     semestre,
     modulo,
     area,
@@ -138,15 +138,16 @@ const crearActividad = async (req, res = response) => {
   let archivo = ''
   try {
     const nombreArchivo = await subirArchivos(req.files)
-    archivo = nombreArchivo
-    const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
-    newActividad.responsable = req.usuario.id
+    archivo = nombreArchivo + ' ' + date
+    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    // newActividad.responsable = req.usuario.username
     await newActividad.save()
     res.status(200).json({
-      msg: 'Actividad guardada correctamente'
+      msg: 'Actividad guardada correctamente',
+      newActividad
     })
   } catch (error) {
-    res.status(400).json({error})
+    res.status(400).json({error, msg: 'aqui llegó el error'})
   }
   // console.log(archivo)
 
