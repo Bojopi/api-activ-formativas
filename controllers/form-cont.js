@@ -123,7 +123,8 @@ const crearActividad = async (req, res = response) => {
     // archivo,
   } = req.body;
 
-  // console.log(req.files);
+  console.log(req);
+  // console.log(req.body.archivo);
 
   // if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
   //   res.status(400).json({
