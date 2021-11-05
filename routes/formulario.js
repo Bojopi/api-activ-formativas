@@ -3,10 +3,24 @@ const router = express.Router()
 const { check } = require('express-validator')
 const formController = require('../controllers/form-cont')
 const auth = require('../middlewares/auth-mid')
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads')
+    },
+    filename: (req, file, cb) => {
+        const { originalname } = file
+        cb(null, originalname)
+    }
+})
+
+const upload = multer({ storage })
 
 //subir actividad
 router.post('/',
     auth,
+    upload.single('archivo'),
     formController.crearActividad
 )
 

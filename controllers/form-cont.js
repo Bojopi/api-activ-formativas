@@ -123,8 +123,9 @@ const crearActividad = async (req, res = response) => {
     // archivo,
   } = req.body;
 
-  console.log(req);
-  // console.log(req.body.archivo);
+  // console.log(req);
+  console.log(req.file.name);
+  return
 
   // if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
   //   res.status(400).json({
@@ -136,11 +137,11 @@ const crearActividad = async (req, res = response) => {
   const date = new Date()
   // console.log(date)
 
-  let archivo = ''
+  // let archivo = ''
   try {
-    const nombreArchivo = await subirArchivos(req.files)
-    archivo = nombreArchivo + ' ' + date
-    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+    // const nombreArchivo = await subirArchivos(req.files)
+    // archivo = nombreArchivo + ' ' + date
+    const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, date})
     // newActividad.responsable = req.usuario.username
     await newActividad.save()
     res.status(200).json({
@@ -150,55 +151,99 @@ const crearActividad = async (req, res = response) => {
   } catch (error) {
     console.log(error)
     res.status(400).json({error, msg: 'aqui llegó el error'})
-  }
-  // console.log(archivo)
-
-
-  // try {
-  //   // const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
-  //   const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
-  //   newActividad.responsable = req.usuario.id
-  //   await newActividad.save()
-  //   // res.status(200).json({
-  //   //   msg: 'Actividad guardada correctamente'
-  //   // })
-    
-  // } catch (error) {
-  //   res.status(400).json({error})
-  // }
-  
-  // const { archivo } = req.files;
-
-  // //validar la extensión del archivo
-  // const nomCortado = archivo.name.split('.')
-  // const extension = nomCortado[nomCortado.length - 1]
-
-  // const extensionValida = ['docx']
-  // if(!extensionValida.includes(extension)) {
-  //   return res.status(400).json({
-  //     msg: `La extension: ${extension} no es permitida, solo se permiten archivos ${extensionValida}`
-  //   })
-  // }
-
-  // res.json({extension})
-
-  // const uploadPath = path.join(__dirname, "../uploads/", archivo.name)
-
-  // archivo.mv(uploadPath, (err) => {
-  //   if (err) {
-  //     return res.status(500).json({err});
-  //   }
-
-  //   res.send("File uploaded to " + uploadPath);
-  // });
-
-  // res.json({
-  //   msg: "actividad creada",
-  // });
-  
-  // console.log(req.files)
-  
+  }  
 };
+
+// const crearActividad = async (req, res = response) => {
+//   const {
+//     fecha,
+//     responsable,
+//     semestre,
+//     modulo,
+//     area,
+//     materia,
+//     carrera,
+//     tip_actividad,
+//     desc_actividad,
+//     // archivo,
+//   } = req.body;
+
+//   // console.log(req);
+//   console.log(req.file);
+
+//   // if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
+//   //   res.status(400).json({
+//   //     msg: "No hay archivos cargados."
+//   //   });
+//   //   return;
+//   // }
+
+//   const date = new Date()
+//   // console.log(date)
+
+//   // let archivo = ''
+//   try {
+//     const nombreArchivo = await subirArchivos(req.files)
+//     archivo = nombreArchivo + ' ' + date
+//     const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+//     // newActividad.responsable = req.usuario.username
+//     await newActividad.save()
+//     res.status(200).json({
+//       msg: 'Actividad guardada correctamente',
+//       newActividad
+//     })
+//   } catch (error) {
+//     console.log(error)
+//     res.status(400).json({error, msg: 'aqui llegó el error'})
+//   }
+//   // console.log(archivo)
+
+
+//   // try {
+//   //   // const newActividad = new Actividad({fecha, responsable, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+//   //   const newActividad = new Actividad({fecha, semestre, modulo, area, materia, carrera, tip_actividad, desc_actividad, archivo, date})
+//   //   newActividad.responsable = req.usuario.id
+//   //   await newActividad.save()
+//   //   // res.status(200).json({
+//   //   //   msg: 'Actividad guardada correctamente'
+//   //   // })
+    
+//   // } catch (error) {
+//   //   res.status(400).json({error})
+//   // }
+  
+//   // const { archivo } = req.files;
+
+//   // //validar la extensión del archivo
+//   // const nomCortado = archivo.name.split('.')
+//   // const extension = nomCortado[nomCortado.length - 1]
+
+//   // const extensionValida = ['docx']
+//   // if(!extensionValida.includes(extension)) {
+//   //   return res.status(400).json({
+//   //     msg: `La extension: ${extension} no es permitida, solo se permiten archivos ${extensionValida}`
+//   //   })
+//   // }
+
+//   // res.json({extension})
+
+//   // const uploadPath = path.join(__dirname, "../uploads/", archivo.name)
+
+//   // archivo.mv(uploadPath, (err) => {
+//   //   if (err) {
+//   //     return res.status(500).json({err});
+//   //   }
+
+//   //   res.send("File uploaded to " + uploadPath);
+//   // });
+
+//   // res.json({
+//   //   msg: "actividad creada",
+//   // });
+  
+//   // console.log(req.files)
+  
+// };
 
 const buscarMateria = async (req = request, res = response) => {
   let { nom_materia = '' } = req.query

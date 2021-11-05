@@ -4,6 +4,8 @@ const cors = require('cors')
 const { dbConex } = require('../database/configdb');
 const fileUpload = require('express-fileupload');
 
+const bodyParser = require('body-parser')
+
 class Server {
 
     constructor() {
@@ -46,6 +48,7 @@ class Server {
 
         //Directorio público
         this.app.use(express.static('public'))
+        this.app.use(express.static('uploads'))
 
         //fileupload
         this.app.use(fileUpload({
@@ -53,6 +56,9 @@ class Server {
             tempFileDir: '/tmp/',
             createParentPath: true,
         }))
+
+        //bodyParser
+        this.app.use(bodyParser.urlencoded({extended: true}))
 
         //carpeta pública
         this.app.use('/uploads', express.static('/uploads'))
